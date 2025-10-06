@@ -100,11 +100,3 @@ drivers_final_df = drivers_with_columns_df.drop(col("url"))
 
 drivers_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.drivers")
 
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC SELECT * FROM f1_processed.drivers
-
-# COMMAND ----------
-
-dbutils.notebook.exit("Success")
