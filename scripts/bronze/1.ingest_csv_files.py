@@ -34,11 +34,11 @@ circuits_schema = StructType(fields=[StructField("circuitId", IntegerType(), Fal
 circuits_df = spark.read \
 .option("header", True) \
 .schema(circuits_schema) \
-.csv(f"{bronze_folder_path}/circuits.csv")
+.csv(f"{raw_folder_path}/circuits.csv")
 
 # COMMAND ----------
 
-circuits_df.write.mode("overwrite").format("delta").saveAsTable("bronze.circuits")
+circuits_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/circuits")
 
 # COMMAND ----------
 
@@ -62,11 +62,11 @@ races_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
 races_df = spark.read \
 .option("header", True) \
 .schema(races_schema) \
-.csv(f"{bronze_folder_path}/races.csv")
+.csv(f"{raw_folder_path}/races.csv")
 
 # COMMAND ----------
 
-races_df.write.mode("overwrite").format("delta").saveAsTable("bronze.races")
+races_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/races")
 
 # COMMAND ----------
 
@@ -87,8 +87,8 @@ lap_times_schema = StructType(fields=[StructField("raceId", IntegerType(), False
 
 lap_times_df = spark.read \
 .schema(lap_times_schema) \
-.csv(f"{bronze_folder_path}/lap_times")
+.csv(f"{raw_folder_path}/lap_times")
 
 # COMMAND ----------
 
-lap_times_df.write.mode("overwrite").format("delta").saveAsTable("bronze.lap_times")
+lap_times_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/lap_times")
