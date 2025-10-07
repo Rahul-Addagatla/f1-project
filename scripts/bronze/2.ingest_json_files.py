@@ -22,11 +22,11 @@ constructors_schema = StructType(fields=[StructField("constructorId", IntegerTyp
 
 constructor_df = spark.read \
 .schema(constructors_schema) \
-.json(f"{bronze_folder_path}/constructors.json")
+.json(f"{raw_folder_path}/constructors.json")
 
 # COMMAND ----------
 
-constructor_final_df.write.mode("overwrite").format("delta").saveAsTable("bronze.constructors")
+constructor_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/constructor")
 
 # COMMAND ----------
 
@@ -56,11 +56,11 @@ drivers_schema = StructType(fields=[StructField("driverId", IntegerType(), False
 
 drivers_df = spark.read \
 .schema(drivers_schema) \
-.json(f"{bronze_folder_path}/drivers.json")
+.json(f"{raw_folder_path}/drivers.json")
 
 # COMMAND ----------
 
-drivers_final_df.write.mode("overwrite").format("delta").saveAsTable("bronze.drivers")
+drivers_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/drivers")
 
 # COMMAND ----------
 
@@ -83,11 +83,11 @@ pit_stops_schema = StructType(fields=[StructField("raceId", IntegerType(), False
 pit_stops_df = spark.read \
 .schema(pit_stops_schema) \
 .option("multiLine", True) \
-.json(f"{bronze_folder_path}/pit_stops.json")
+.json(f"{raw_folder_path}/pit_stops.json")
 
 # COMMAND ----------
 
-pit_stops_final_df.write.mode("overwrite").format("delta").saveAsTable("bronze.pit_stops")
+pit_stops_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/pit_stops")
 
 # COMMAND ----------
 
@@ -119,11 +119,11 @@ results_schema = StructType(fields=[StructField("resultId", IntegerType(), False
 
 results_df = spark.read \
 .schema(results_schema) \
-.json(f"{bronze_folder_path}/results.json")
+.json(f"{raw_folder_path}/results.json")
 
 # COMMAND ----------
 
-results_final_df.write.mode("overwrite").format("delta").saveAsTable("bronze.results")
+results_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/results")
 
 # COMMAND ----------
 
@@ -148,8 +148,8 @@ qualifying_schema = StructType(fields=[StructField("qualifyId", IntegerType(), F
 qualifying_df = spark.read \
 .schema(qualifying_schema) \
 .option("multiLine", True) \
-.json(f"{bronze_folder_path}/qualifying")
+.json(f"{raw_folder_path}/qualifying")
 
 # COMMAND ----------
 
-qualifying_final_df.write.mode("overwrite").format("delta").saveAsTable("bronze.results")
+qualifying_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/qualifying")
