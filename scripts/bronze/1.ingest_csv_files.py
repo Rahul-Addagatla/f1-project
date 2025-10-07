@@ -87,7 +87,7 @@ lap_times_schema = StructType(fields=[StructField("raceId", IntegerType(), False
 
 lap_times_df = spark.read \
 .schema(lap_times_schema) \
-.csv(f"{raw_folder_path}/lap_times")
+.csv(f"{bronze_folder_path}/lap_times")
 
 # COMMAND ----------
 
