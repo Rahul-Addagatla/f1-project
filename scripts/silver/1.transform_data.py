@@ -56,7 +56,7 @@ races_metadata_df = races_df.withColumn("race_date", to_timestamp(concat(col('da
 
 # COMMAND ----------
 
-races_selected_df = races_metadata_df.select(col("raceId"), col("year"), col("round"), col("circuitId"), col("name"), col("ingestion_date"), col("race_date"), col("ingestion_date"))
+races_selected_df = races_metadata_df.select(col("raceId"), col("year"), col("round"), col("circuitId"), col("name"), col("race_date"), col("ingestion_date"))
 
 # COMMAND ----------
 
@@ -153,7 +153,7 @@ results_deduped_df = results_renamed_df.dropDuplicates(['race_id', 'driver_id'])
 
 # COMMAND ----------
 
-races_renamed_df.write.mode("overwrite").format("delta").saveAsTable("silver.races")
+results_deduped_df.write.mode("overwrite").format("delta").saveAsTable("silver.results")
 
 # COMMAND ----------
 
