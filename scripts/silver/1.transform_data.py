@@ -31,6 +31,7 @@ circuits_selected_df = circuits_metadata.select(col("circuitId"), col("circuitRe
 # Rename columns to follow snake_case naming conventions for consistency
 circuits_renamed_df = circuits_selected_df.withColumnRenamed("circuitId", "circuit_id") \
     .withColumnRenamed("circuitRef", "circuit_ref") \
+    .withColumnRenamed("location", "circuit_location") \
     .withColumnRenamed("lat", "latitude") \
     .withColumnRenamed("lng", "longitude") \
     .withColumnRenamed("alt", "altitude")
@@ -50,18 +51,19 @@ circuits_renamed_df.write.mode("overwrite").format("delta").saveAsTable("silver.
 races_df = spark.read.parquet(f"{bronze_folder_path}/races")
 
 # COMMAND ----------
-races_metadata_df = races_df.withColumn("race_timestamp", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss')) \
+races_metadata_df = races_df.withColumn("race_date", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss')) \
                                   .add_ingestion_date(races_with_timestamp_df)
 
 # COMMAND ----------
 
-races_selected_df = races_metadata_df.select(col("raceId"), col("year"), col("round"), col("circuitId"), col("name"), col("ingestion_date"), col("race_timestamp"), col("ingestion_date"))
+races_selected_df = races_metadata_df.select(col("raceId"), col("year"), col("round"), col("circuitId"), col("name"), col("ingestion_date"), col("race_date"), col("ingestion_date"))
 
 # COMMAND ----------
 
 races_renamed_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
     .withColumnRenamed("year", "race_year") \
-    .withColumnRenamed("circuitId", "circuit_id")
+    .withColumnRenamed("circuitId", "circuit_id") \
+    .withColumnRenamed("name", "race_name") 
 
 # COMMAND ----------
 
@@ -84,6 +86,7 @@ constructor_metadata_df = add_ingestion_date(constructor_df)
 
 constructor_renamed_df = constructor_metadata_df.withColumnRenamed("constructorId", "constructor_id") \
                                              .withColumnRenamed("constructorRef", "constructor_ref") \
+                                             .withColumnRenamed("name", "team") \
                                              .drop(col('url'))
 
 # COMMAND ----------
@@ -108,6 +111,9 @@ drivers_metadata_df = add_ingestion_date(drivers_df)
 drivers_renamed_df = drivers_metadata_df.withColumnRenamed("driverId", "driver_id") \
                                             .withColumnRenamed("driverRef", "driver_ref") \
                                             .withColumn("name", concat(col("name.forename"), lit(" "), col("name.surname"))) \
+                                            .withColumnRenamed("number", "driver_number") \
+                                            .withColumnRenamed("name", "driver_name") \
+                                            .withColumnRenamed("nationality", "driver_nationality") \
                                             .drop(col("url")
 
 # COMMAND ----------
@@ -130,11 +136,12 @@ results_metadata_df = add_ingestion_date(results_df)
 # COMMAND ----------
 
 results_renamed_df = results_metadata_df.withColumnRenamed("resultId", "result_id") \
-                                            .withColumnRenamed("raceId", "race_id") \
+                                            .withColumnRenamed("raceId", "result_race_id") \
                                             .withColumnRenamed("driverId", "driver_id") \
                                             .withColumnRenamed("constructorId", "constructor_id") \
                                             .withColumnRenamed("positionText", "position_text") \
                                             .withColumnRenamed("positionOrder", "position_order") \
+                                            .withColumnRenamed("time", "race_time") \
                                             .withColumnRenamed("fastestLap", "fastest_lap") \
                                             .withColumnRenamed("fastestLapTime", "fastest_lap_time") \
                                             .withColumnRenamed("fastestLapSpeed", "fastest_lap_speed") \
