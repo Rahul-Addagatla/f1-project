@@ -31,9 +31,9 @@ race_circuits_df = races_df.join(circuits_df, races_df.circuit_id == circuits_df
 # COMMAND ----------
 
 # Join results with race-circuits, drivers, and constructors to get enriched race results data
-race_results_df = results_df.join(race_circuits_df, results_df.result_race_id == race_circuits_df.race_id) \
-                            .join(drivers_df, results_df.driver_id == drivers_df.driver_id) \
-                            .join(constructors_df, results_df.constructor_id == constructors_df.constructor_id)
+race_results_df = results_df.join(race_circuits_df, results_df.result_race_id == race_circuits_df.race_id, "inner") \
+                            .join(drivers_df, results_df.driver_id == drivers_df.driver_id, "inner") \
+                            .join(constructor_df, results_df.constructor_id == constructors_df.constructor_id, "inner")
 
 # COMMAND ----------
 
@@ -44,7 +44,7 @@ from pyspark.sql.functions import current_timestamp
 
 # Select final required columns and add a created timestamp
 final_df = race_results_df.select("race_id", "race_year", "race_name", "race_date", "circuit_location", "driver_name", "driver_number", "driver_nationality",
-                                 "team", "grid", "fastest_lap", "race_time", "points", "position", "result_file_date") \
+                                 "team", "grid", "fastest_lap", "race_time", "points", "position") \
                           .withColumn("created_date", current_timestamp()) 
 
 # COMMAND ----------
