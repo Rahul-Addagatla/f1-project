@@ -38,7 +38,7 @@ circuits_df = spark.read \
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/circuits")
+circuits_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/circuits")
 
 # COMMAND ----------
 
@@ -66,7 +66,7 @@ races_df = spark.read \
 
 # COMMAND ----------
 
-races_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/races")
+races_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/races")
 
 # COMMAND ----------
 
@@ -91,4 +91,4 @@ lap_times_df = spark.read \
 
 # COMMAND ----------
 
-lap_times_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/lap_times")
+lap_times_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/lap_times")
