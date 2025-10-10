@@ -1,6 +1,8 @@
 # Formula1 Project
 ## Project Overview
 
+Designed and implemented an end-to-end data engineering pipeline using Azure Databricks to analyze Formula 1 race results data from 1950 to 2021. The project demonstrates enterprise-grade data processing capabilities using a medallion architecture (Bronze-Silver-Gold) to transform raw racing data into actionable analytics and insights.
+
 This project involves:
 
 - **Data Architecture**: Designing a Modern Data Warehouse Using Medallion Architecture **Bronze**, **Silver**, and **Gold** layers.
