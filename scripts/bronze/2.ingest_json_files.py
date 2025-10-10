@@ -12,21 +12,22 @@ from pyspark.sql.types import StructType, StructField, IntegerType, StringType, 
 
 # COMMAND ----------
 
-constructors_schema = StructType(fields=[StructField("constructorId", IntegerType(), False),
+constructor_schema = StructType(fields=[StructField("constructorId", IntegerType(), False),
                                     StructField("constructorRef", StringType(), True),
-                                    StructField("name", StringType(), True),,
+                                    StructField("name", StringType(), True),
                                     StructField("nationality", StringType(), True),
                                     StructField("url", StringType(), True)
+])
 
 # COMMAND ----------
 
 constructor_df = spark.read \
-.schema(constructors_schema) \
+.schema(constructor_schema) \
 .json(f"{raw_folder_path}/constructors.json")
 
 # COMMAND ----------
 
-constructor_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/constructor")
+constructor_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/constructor")
 
 # COMMAND ----------
 
@@ -37,7 +38,6 @@ constructor_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/cons
 
 name_schema = StructType(fields=[StructField("forename", StringType(), True),
                                  StructField("surname", StringType(), True)
-  
 ])
 
 # COMMAND ----------
@@ -60,7 +60,7 @@ drivers_df = spark.read \
 
 # COMMAND ----------
 
-drivers_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/drivers")
+drivers_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/drivers")
 
 # COMMAND ----------
 
@@ -87,7 +87,7 @@ pit_stops_df = spark.read \
 
 # COMMAND ----------
 
-pit_stops_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/pit_stops")
+pit_stops_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/pit_stops")
 
 # COMMAND ----------
 
@@ -123,7 +123,7 @@ results_df = spark.read \
 
 # COMMAND ----------
 
-results_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/results")
+results_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/results")
 
 # COMMAND ----------
 
@@ -152,4 +152,4 @@ qualifying_df = spark.read \
 
 # COMMAND ----------
 
-qualifying_final_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/qualifying")
+qualifying_df.write.mode("overwrite").parquet(f"{bronze_folder_path}/qualifying")
