@@ -51,8 +51,11 @@ circuits_renamed_df.write.mode("overwrite").format("delta").saveAsTable("silver.
 races_df = spark.read.parquet(f"{bronze_folder_path}/races")
 
 # COMMAND ----------
-races_metadata_df = races_df.withColumn("race_date", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss')) \
-                                  .add_ingestion_date(races_with_timestamp_df)
+races_with_timestamp_df = races_df.withColumn('race_date', to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss'))
+
+# COMMAND ----------
+
+races_metadata_df = add_ingestion_date(races_with_timestamp_df)
 
 # COMMAND ----------
 
@@ -110,11 +113,11 @@ drivers_metadata_df = add_ingestion_date(drivers_df)
 
 drivers_renamed_df = drivers_metadata_df.withColumnRenamed("driverId", "driver_id") \
                                             .withColumnRenamed("driverRef", "driver_ref") \
-                                            .withColumn("name", concat(col("name.forename"), lit(" "), col("name.surname"))) \
+                                            .withColumn("driver_name", concat(col("name.forename"), lit(" "), col("name.surname"))) \
                                             .withColumnRenamed("number", "driver_number") \
-                                            .withColumnRenamed("name", "driver_name") \
+                                            .withColumnRenamed("number", "driver_number") \
                                             .withColumnRenamed("nationality", "driver_nationality") \
-                                            .drop(col("url")
+                                            .drop(col("url"))
 
 # COMMAND ----------
 
@@ -145,11 +148,11 @@ results_renamed_df = results_metadata_df.withColumnRenamed("resultId", "result_i
                                             .withColumnRenamed("fastestLap", "fastest_lap") \
                                             .withColumnRenamed("fastestLapTime", "fastest_lap_time") \
                                             .withColumnRenamed("fastestLapSpeed", "fastest_lap_speed") \
-                                            .drop(col("statusId")
+                                            .drop(col("statusId"))
 
 # COMMAND ----------
 
-results_deduped_df = results_renamed_df.dropDuplicates(['race_id', 'driver_id'])
+results_deduped_df = results_renamed_df.dropDuplicates(['result_race_id', 'driver_id'])
 
 # COMMAND ----------
 
