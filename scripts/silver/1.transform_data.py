@@ -115,7 +115,6 @@ drivers_renamed_df = drivers_metadata_df.withColumnRenamed("driverId", "driver_i
                                             .withColumnRenamed("driverRef", "driver_ref") \
                                             .withColumn("driver_name", concat(col("name.forename"), lit(" "), col("name.surname"))) \
                                             .withColumnRenamed("number", "driver_number") \
-                                            .withColumnRenamed("number", "driver_number") \
                                             .withColumnRenamed("nationality", "driver_nationality") \
                                             .drop(col("url"))
 
